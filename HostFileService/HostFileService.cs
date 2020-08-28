@@ -179,7 +179,7 @@ namespace HostFileService
             string line;
             try
             {
-                StreamReader file = File.OpenText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"drivers/etc/hosts"));
+                StreamReader file = File.OpenText(host_file_path);
 
                 while ((line = file.ReadLine()) != null)
                     if (line.StartsWith("#"))
@@ -205,11 +205,13 @@ namespace HostFileService
             
             if (!output.Contains("# THIS HOST FILE IS MANAGED BY HostFileService"))
             {
-                output.Add("# THIS HOST FILE IS MANAGED BY HostFileService");
+                output.Add("# *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*");
+                output.Add("# THIS HOST FILE IS MANAGED BY HostFileService!");
                 output.Add("# Using Registry Values in \\HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\HostFileService\\hosts");
                 output.Add("# To add a host, make a new string entry with Name: <IP>,<hostname>. No data is needed.");
-                output.Add("# Host file will be updated within 5 min, at service restart, or reboot");
-                output.Add("#");
+                output.Add("# Host file will be updated within set interval, at service restart, or reboot.");
+                output.Add("# See https://github.com/sn0wfa11/HostFileService for more information.");
+                output.Add("# *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*");
             }
             
             foreach (string host in hosts)
