@@ -40,7 +40,7 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "Manages Host File via Registry";
-            this.serviceInstaller1.DisplayName = "HostFileManager";
+            this.serviceInstaller1.DisplayName = "HostFileService";
             this.serviceInstaller1.ServiceName = "HostFileService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
