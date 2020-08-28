@@ -103,22 +103,19 @@ namespace HostFileService
             try
             {
                 RegistryKey key = Registry.LocalMachine.CreateSubKey(service_registry_path, true);
-                bool configured = Convert.ToBoolean(Convert.ToUInt16(key.GetValue("Configured", 0)));
-                if (configured)
+                if (Convert.ToBoolean(Convert.ToUInt16(key.GetValue("Configured", 0))))
                     Update();
-                    
                 else
                 {
                     if (Merge())
                         key.SetValue("Configured", 1, RegistryValueKind.DWord);
-                       
                     else
                         eventLog1.WriteEntry("Merge Failed", EventLogEntryType.Error, eventId);
                 }
             }
             catch (Exception e)
             {
-                eventLog1.WriteEntry("Error" + e);
+                eventLog1.WriteEntry("Unable to Update: " + e, EventLogEntryType.Error, eventId);
             }
         }
 
@@ -203,7 +200,7 @@ namespace HostFileService
             bool is_read_only = false;
             List<string> output = Get_Hostsfile_Comments();
             
-            if (!output.Contains("# THIS HOST FILE IS MANAGED BY HostFileService"))
+            if (!output.Contains("# THIS HOST FILE IS MANAGED BY HostFileService!"))
             {
                 output.Add("# *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*");
                 output.Add("# THIS HOST FILE IS MANAGED BY HostFileService!");
