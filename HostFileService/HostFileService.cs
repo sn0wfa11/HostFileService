@@ -17,9 +17,11 @@ namespace HostFileService
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(System.IntPtr handle, ref ServiceStatus serviceStatus);
 
-        private string configured_registry_path = @"System\CurrentControlSet\Services\HostFileService";
+        private string service_registry_path = @"System\CurrentControlSet\Services\HostFileService";
         private string host_registry_path = @"System\CurrentControlSet\Services\HostFileService\hosts";
         private string host_file_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"drivers/etc/hosts");
+        private double default_interval = 5; //interval in minutes
+        private Timer timer;
 
         /// <summary>
         /// Constructor
@@ -54,9 +56,8 @@ namespace HostFileService
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             // Set up a timer that triggers every minute.
-            Timer timer = new Timer();
-            //timer.Interval = 300000; // 5 min
-            timer.Interval = 60000; // 60 sec
+            timer = new Timer();
+            timer.Interval = GetTimerInterval();
             timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
             timer.Start();
             RunUpdate();
@@ -64,6 +65,18 @@ namespace HostFileService
             // Update the service state to Running.
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+        }
+
+        double GetTimerInterval()
+        {
+            RegistryKey key = Registry.LocalMachine.CreateSubKey(service_registry_path, true);
+            if (key.GetValue("Interval") == null)
+            {
+                key.SetValue("Interval", default_interval, RegistryValueKind.DWord);
+                return (default_interval * 60000);
+            }
+            else
+                return (Convert.ToDouble(key.GetValue("Interval", 5)) * 60000);
         }
 
         /// <summary>
@@ -75,6 +88,9 @@ namespace HostFileService
         {
             eventId++;
             RunUpdate();
+            double new_interval = GetTimerInterval();
+            if (timer.Interval != new_interval)
+                timer.Interval = new_interval;
         }
 
         /// <summary>
@@ -86,7 +102,7 @@ namespace HostFileService
         {
             try
             {
-                RegistryKey key = Registry.LocalMachine.CreateSubKey(configured_registry_path, true);
+                RegistryKey key = Registry.LocalMachine.CreateSubKey(service_registry_path, true);
                 bool configured = Convert.ToBoolean(Convert.ToUInt16(key.GetValue("Configured", 0)));
                 if (configured)
                     Update();
