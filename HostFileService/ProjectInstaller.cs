@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ServiceProcess;
 using System.IO;
 
@@ -63,7 +60,7 @@ namespace HostFileService
                         lines.Add(line);
                 file.Close();
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 // Do nothing here
             }
@@ -101,7 +98,7 @@ namespace HostFileService
                     File.SetAttributes(host_file_path, attributes);
                 }
             }
-            catch (Exception error)
+            catch (Exception )
             {
                 // Do nothing here
             }
@@ -128,6 +125,5 @@ namespace HostFileService
         {
             return attributes | attributesToAdd;
         }
-
     }
 }

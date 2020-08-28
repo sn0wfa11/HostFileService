@@ -278,7 +278,7 @@ namespace HostFileService
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(host_registry_path);
                 return (key.GetValueNames().ToList());
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return (new List<string>());
             }
