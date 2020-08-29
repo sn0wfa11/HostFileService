@@ -67,16 +67,37 @@ namespace HostFileService
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
 
+        /// <summary>
+        /// Gets the timer interval set in the registry
+        /// Fixes the entry if it is the wrong type
+        /// </summary>
+        /// <returns>interval</returns>
         double GetTimerInterval()
         {
             RegistryKey key = Registry.LocalMachine.CreateSubKey(service_registry_path, true);
-            if (key.GetValue("Interval") == null)
+            try
             {
-                key.SetValue("Interval", default_interval, RegistryValueKind.DWord);
+                if (key.GetValue("Interval") == null)
+                {
+                    key.SetValue("Interval", default_interval, RegistryValueKind.DWord);
+                    return (default_interval * 60000);
+                }
+                else
+                {
+                    if (key.GetValueKind("Interval") != RegistryValueKind.DWord)
+                    {
+                        key.DeleteValue("Interval");
+                        key.SetValue("Interval", default_interval, RegistryValueKind.DWord);
+                        return (default_interval * 60000);
+                    }
+                    else
+                        return (Convert.ToDouble(key.GetValue("Interval", default_interval)) * 60000);
+                }
+            }
+            catch
+            {
                 return (default_interval * 60000);
             }
-            else
-                return (Convert.ToDouble(key.GetValue("Interval", default_interval)) * 60000);
         }
 
         /// <summary>
@@ -87,6 +108,7 @@ namespace HostFileService
         public void OnTimer(object sender, ElapsedEventArgs args)
         {
             eventId++;
+            
             RunUpdate();
             double new_interval = GetTimerInterval();
             if (timer.Interval != new_interval)
@@ -102,7 +124,18 @@ namespace HostFileService
         {
             try
             {
+                RegistryKey host_key = Registry.LocalMachine.CreateSubKey(host_registry_path, true); // make this reg path if it doesn't exist.
                 RegistryKey key = Registry.LocalMachine.CreateSubKey(service_registry_path, true);
+
+                if (key.GetValue("Configured") != null)
+                {
+                    if (key.GetValueKind("Configured") != RegistryValueKind.DWord)
+                    {
+                        key.DeleteValue("Configured");
+                        key.SetValue("Configured", 0, RegistryValueKind.DWord);
+                    }
+                }
+
                 if (Convert.ToBoolean(Convert.ToUInt16(key.GetValue("Configured", 0))))
                     Update();
                 else

@@ -77,7 +77,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\HostFileServiceSetup.msi"
+        "OutputFilename" = "8:Release\\HostFileService.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -276,7 +276,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HostFileService"
         "ProductCode" = "8:{973FC303-E10A-49AF-8DE8-345B0CB9F2D2}"
-        "PackageCode" = "8:{470ACA6D-FBED-415F-BE7B-AA34B3019C48}"
+        "PackageCode" = "8:{CB6B376F-94C9-4702-9148-BC0203E451FB}"
         "UpgradeCode" = "8:{8936F4B0-6619-4673-B514-688E7314D8D8}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -797,7 +797,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_99F3F9AFA33F4716B593CB91B6AE76A2"
             {
-            "SourcePath" = "8:..\\HostFileService\\obj\\Debug\\HostFileService.exe"
+            "SourcePath" = "8:..\\HostFileService\\obj\\Release\\HostFileService.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_77D177FA69F3481097A25B57EC136E18"
