@@ -20,7 +20,7 @@ namespace HostFileService
         private string service_registry_path = @"System\CurrentControlSet\Services\HostFileService";
         private string host_registry_path = @"System\CurrentControlSet\Services\HostFileService\hosts";
         private string host_file_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"drivers/etc/hosts");
-        private double default_interval = 1; //interval in minutes
+        private double default_interval = 60; //interval in minutes
         private Timer timer;
 
         /// <summary>

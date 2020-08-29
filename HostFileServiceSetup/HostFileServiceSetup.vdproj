@@ -275,9 +275,9 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HostFileService"
-        "ProductCode" = "8:{D5CC5808-06D4-4FC0-98E9-1C9874388943}"
-        "PackageCode" = "8:{5449E16D-2F60-42F8-8CD4-8CBE66F8A2FF}"
-        "UpgradeCode" = "8:{D91358BB-D013-4118-A482-41A1B86B0FB1}"
+        "ProductCode" = "8:{973FC303-E10A-49AF-8DE8-345B0CB9F2D2}"
+        "PackageCode" = "8:{470ACA6D-FBED-415F-BE7B-AA34B3019C48}"
+        "UpgradeCode" = "8:{8936F4B0-6619-4673-B514-688E7314D8D8}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
